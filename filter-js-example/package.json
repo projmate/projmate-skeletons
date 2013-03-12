@@ -1,0 +1,19 @@
+{
+  "name": "{{pm__project}}",
+  "author": "{{pm__author}} <{{pm__email}}>",
+  "version": "0.0.1",
+  "description": "{{pm__description}}",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "projmate-core": "~{{pm__VERSION}}",
+    "chai": "~1.5.0",
+    "mocha": "~1.8.2"
+  },
+  "repository": "",
+  "author": "",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
