@@ -4,7 +4,6 @@ exports.project = function(pm) {
   var $ = pm.shell();
 
   pm.registerTasks({
-
     self: {
       _files: {
         include: [
@@ -13,7 +12,7 @@ exports.project = function(pm) {
       },
       development: [
         f.{{pm__filter}}({header: '/**Custom Header*/', footer: '/**Custom footer*/'}),
-        f.writeFile({lchomp: 'lib', destinationDir: 'tmp'})
+        f.writeFile({_filename: {ensureLeft: 'build/'}})
       ]
     },
 

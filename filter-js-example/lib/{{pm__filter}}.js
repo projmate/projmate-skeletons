@@ -10,19 +10,31 @@ module.exports = function(Projmate) {
 
   /**
    * Example of a filter.
-   *
-   * TODO remove extraneous comments.
    */
   function {{pm__filterCtor}}() {
-    // A wildcard, accepts any extension.
-    // CoffeeScript for example, sets this to ['.coffee', '.litcoffee']
+    // Filters process assets if they match extensions. This can either be
+    // single value string or an array. An asterisk, '*', means process
+    // any asset.
+    //
+    // As an example, the coffee filter, sets this to ['.coffee', '.litcoffee']
     this.extnames = '*';
 
-    // Uncomment next line if your filter changes the extension, for example
-    // CoffeeScript filter has `outExtname = '.js'`.
+    // Uncomment next line if a filter should change the extension. For example,
+    // the coffee filter sets `outExtname = '.js'`.
+    //
     // this.outExtname = ".txt";
-
     Projmate.Filter.apply(this, arguments);
+
+    // Preset sane options for users based on the run environment.
+    //
+    // As an example, the less filter, dumps line numbers while in
+    // development mode.
+    //      this.defaults = { development: { dumpLineNumbers: 'comments' }};
+    this.defaults = {
+      development: {},
+      test: {},
+      production: {}
+    };
   }
   Projmate.extendsFilter({{pm__filterCtor}});
 
@@ -32,16 +44,25 @@ module.exports = function(Projmate) {
    * goes through the pipeline.
    *
    * @param {Object} asset = {
+   *  {String} text The content or text of the file.
    *  {String} filename The filename.
    *  {String} extname The extension name with leading '.'.
    *  {String} dirname The directory name.
-   *  {String} text The content or text of the file.
+   *  {Object} parent The parent collection.
    * }
    * @param {Object} options User's options or {}.
    * @param {Object} cb The callback `function(err, result)`
+   *
+   * To add another asset
+   *
+   *    asset.parent.create({filename: 'path', text: 'content'});
+   *
+   * To clear all assets
+   *
+   *    asset.parent.clear()
    */
   {{pm__filterCtor}}.prototype.process = function(asset, options, cb) {
-    // Make header required and footer optional
+    // Example of required and optional options.
     if (!options.header) return cb("Options.header is required");
     var header = options.header;
     var footer = options.footer || "";
@@ -50,7 +71,8 @@ module.exports = function(Projmate) {
       // TODO processing here.
       var text = header + asset.text + footer;
 
-      // Projmate handles updating the asset
+      // Projmate updates the asset if text is not empty. asset.text
+      // and asset.extname could be updated manually here.
       cb(null, text);
     } catch (ex) {
       cb(ex);
